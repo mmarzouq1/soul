@@ -1,0 +1,46 @@
+openapi: 3.1.0
+info:
+  title: واجهة برمجة تطبيقات مكتبة الشيعة أونلاين
+  description: واجهة برمجة التطبيقات (API) للبحث واسترجاع الكتب والمحتوى الإسلامي من مكتبة الشيعة أونلاين.
+  version: 1.0.0
+servers:
+  - url: https://gptstore.tools/api/shiaonlinelibrary
+    description: الخادم الرئيسي (الإنتاج)
+paths:
+  /search:
+    get:
+      operationId: searchLibrary
+      summary: البحث في مكتبة الشيعة أونلاين
+      description: إجراء بحث باستخدام كلمات مفتاحية ضمن مجموعة مكتبة الشيعة أونلاين.
+      parameters:
+        - name: query
+          in: query
+          required: true
+          description: الكلمة المفتاحية المستخدمة في البحث.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: قائمة بالنتائج أو المستندات المطابقة.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          description: عنوان الكتاب أو النتيجة
+                        author:
+                          type: string
+                          description: اسم المؤلف
+                        url:
+                          type: string
+                          description: رابط الوصول إلى المحتوى
+                        snippet:
+                          type: string
+                          description: مقتطف نصي من المحتوى

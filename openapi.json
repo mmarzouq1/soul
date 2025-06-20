@@ -12,6 +12,7 @@
   "paths": {
     "/api/search": {
       "post": {
+        "operationId": "searchInShiaLibrary",
         "summary": "البحث في مكتبة الشيعة",
         "requestBody": {
           "required": true,

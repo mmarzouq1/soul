@@ -1,29 +1,47 @@
-import axios from 'axios';
-import * as cheerio from 'cheerio';
-
-export default async function handler(req, res) {
-  const query = req.query.q;
-
-  if (!query) {
-    return res.status(400).json({ error: 'Missing query' });
-  }
-
-  try {
-    const url = `https://almaaref.org/maarefsearch/index.php?query=${encodeURIComponent(query)}`;
-    const { data } = await axios.get(url);
-    const $ = cheerio.load(data);
-    const results = [];
-
-    $('ul > li > a').each((_, el) => {
-      results.push({
-        title: $(el).text(),
-        url: $(el).attr('href'),
-      });
-    });
-
-    res.status(200).json({ results });
-  } catch (error) {
-    console.error('ERROR:', error);
-    res.status(500).json({ error: 'Internal server error' });
+"/api/search": {
+  "post": {
+    "operationId": "searchInLibrary",
+    "summary": "Search in the Shia library",
+    "description": "Allows querying the Shia library by keyword and category.",
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "query": { "type": "string" },
+              "category": { "type": "string" }
+            },
+            "required": ["query"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Search results",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": { "type": "string" },
+                      "url": { "type": "string" },
+                      "author": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

@@ -1,5 +1,6 @@
 "/api/search": {
   "post": {
+    "operationId": "post_api_search",
     "operationId": "searchInLibrary",
     "summary": "Search in the Shia library",
     "description": "Allows querying the Shia library by keyword and category.",
